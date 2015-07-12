@@ -27,19 +27,12 @@ public class User extends AbstractPersistenceObject{
     @Column
     private String password;
     @Column
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             name = "USER_LIST",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "taskList_id")
     )
-
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @CollectionTable(name = "UserProgLanguages",
-//            joinColumns = @JoinColumn(name = "user_id"))
-//    @ForExport("Programming Languages")
-//    @Fetch(FetchMode.SELECT)
-//    @BatchSize(size = 1)
     private List<TaskList> lists;
 
     public User() {
@@ -99,10 +92,6 @@ public class User extends AbstractPersistenceObject{
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", lists=" + lists +
-                '}';
+        return getEmail();
     }
 }

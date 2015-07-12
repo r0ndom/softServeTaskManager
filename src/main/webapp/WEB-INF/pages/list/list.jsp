@@ -13,9 +13,6 @@
                     <h4 style="margin-top: -10px; margin-bottom: 50px">FROM SOFTSERVE</h4>
                 </div>
                 <div style="text-align: center" id="lists">
-                    <button class="btn btn-default" id="dXml">Download XML</button>
-                    <button class="btn btn-default" id="dJson">Download JSON</button>
-                    <button class="btn btn-default" id="dBin">Download Binary</button>
                 </div>
             </div>
         </div>

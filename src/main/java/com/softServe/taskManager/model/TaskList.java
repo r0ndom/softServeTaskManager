@@ -7,7 +7,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
-
+@Entity
 public class TaskList extends AbstractPersistenceObject{
 
     public static final int PRIMARY_LENGTH = 50;

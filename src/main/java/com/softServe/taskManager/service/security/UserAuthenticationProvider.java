@@ -15,11 +15,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     @Autowired
     private UserService userService;
 
-    /**
-     * Performs authentication
-     * @param authentication - the authentication request object.
-     * @return a fully authenticated object including credentials
-     */
     @Override
     public Authentication authenticate(final Authentication authentication) {
         final String username = authentication.getName();
@@ -47,11 +42,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
                 null);
     }
 
-    /**
-     * Check if AuthenticationProvider supports the indicated Authentication object.
-     * @param aClass - the authentication object.
-     * @return true if supporting
-     */
     @Override
     public boolean supports(final Class<?> aClass) {
         return true;

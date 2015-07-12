@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <tag:layout>
     <script>
@@ -36,10 +37,9 @@
     <div id="wrapper">
         <div class="container">
             <div class="row col-md-6 col-md-offset-4" style="margin-top: 10%">
-
                 <form name='loginForm' action="<c:url value='/j_spring_security_check' />" method='POST' style="margin-left: 30px">
                     <div class="row">
-                        <div class="col-md-4"><h3>Sign In</h3></div>
+                        <div class="col-md-4"><h3><spring:message code="messages.signIn"/></h3></div>
                         <div class="col-md-3" style="text-align: right; margin-top: 20px">
                             <h5><a href="/register" style="text-decoration: underline;">Sign Up</a></h5></div>
                     </div>
@@ -68,7 +68,6 @@
                     </div>
                     <div class="row"><div class="col-md-7">
                         <input class="btn btn-primary" style="width: 100%; height: 40px" value="Sign In" type="submit"></div></div>
-
                 </form>
             </div>
         </div>
