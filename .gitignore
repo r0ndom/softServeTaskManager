@@ -1,0 +1,18 @@
+*.class
+db.bin
+db.json
+db.xml
+
+# Package Files #
+*.jar
+*.war
+*.ear
+.idea/
+**/.idea/
+*.iml
+*.impl
+*.war
+**/target/
+.settings/
+**/.settings/
+/target/
