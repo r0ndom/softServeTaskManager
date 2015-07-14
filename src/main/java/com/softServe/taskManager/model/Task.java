@@ -24,6 +24,14 @@ public class Task extends AbstractPersistenceObject{
     @Temporal(TemporalType.DATE)
     private Date deadline;
 
+    public Task() {
+    }
+
+    public Task(String name, Date deadline) {
+        this.name = name;
+        this.deadline = deadline;
+    }
+
     public String getName() {
         return name;
     }

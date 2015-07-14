@@ -25,6 +25,14 @@ public class TaskList extends AbstractPersistenceObject{
     )
     private List<Task> tasks;
 
+    public TaskList() {
+    }
+
+    public TaskList(String name, List<Task> tasks) {
+        this.name = name;
+        this.tasks = tasks;
+    }
+
     public String getName() {
         return name;
     }
