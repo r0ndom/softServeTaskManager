@@ -1,7 +1,10 @@
 package com.softServe.taskManager.dao.impl.jdbc;
 
 import com.softServe.taskManager.dao.UserDao;
+import com.softServe.taskManager.model.Task;
+import com.softServe.taskManager.model.TaskList;
 import com.softServe.taskManager.model.User;
+import com.sun.javafx.tk.Toolkit;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,26 +14,38 @@ import java.util.List;
 
 /**
  * Created by Mike on 7/14/2015.
+ *
  */
 public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao {
     @Override
     public String getSelectQuery() {
-        return "SELECT id, name, surname, enrolment_date, group_id FROM daotalk.Student ";
+//        return "SELECT u.*, tl.*, t.* FROM tdlist.user u INNER JOIN tdlist.taskList tl INNER JOIN tdlist.task t";
+        return "SELECT u.*, tl.*, t.* FROM tdlist.user u INNER JOIN tdlist.taskList tl INNER JOIN tdlist.task t WHERE u.id = tl.user_id AND tl.id = t.tasklist_id;";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO daotalk.Student (name, surname, enrolment_date, group_id) \n" + "VALUES (?, ?, ?, ?);";
+        return "INSERT INTO tdlist.user \n" + "VALUES (?, ?, ?);"
+                + "INSERT INTO tdlist.taskList \n" + "VALUES(?, ?, ?);"
+                + "INSERT INTO tdlist.task \n" + "VALUES(?, ?, ?, ?);";
+
+//        return "INSERT INTO tdlist.user (email, password) \n" + "VALUES (?, ?);"
+//                + "INSERT INTO tdlist.taskList (name, user_id) \n" + "VALUES(?, ?);"
+//                + "INSERT INTO tdlist.task (name, taskDate, taskList_id) \n" + "VALUES(?, ?, ?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE daotalk.Student \n" + "SET name = ?, surname = ?, enrolment_date = ?, group_id = ? \n" + "WHERE id = ?;";
+        return "UPDATE tdlist.user \n" + "SET email = ?, password = ? \n" + "WHERE id = ?;"
+                + "UPDATE tdlist.taskList \n" + "SET name = ?, user_id = ? \n" + "WHERE id = ?;"
+                + "UPDATE tdlist.task \n" + "SET name = ?, taskDate = ?, taskList_id = ? \n" + "WHERE id = ?;";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM daotalk.Student WHERE id= ?;";
+        return "DELETE FROM tdlist.user WHERE id = ?;"
+                + "DELETE FROM tdlist.taskList WHERE id = ?;"
+                + "DELETE FROM tdlist.task WHERE id = ?;";
     }
 
     public UserDaoJdbcImpl(Connection connection) {
@@ -43,11 +58,10 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
         try {
             while (rs.next()) {
                 User user = new User();
-//                student.setId(rs.getInt("id"));
-//                student.setName(rs.getString("name"));
-//                student.setSurname(rs.getString("surname"));
-//                student.setEnrolmentDate(rs.getDate("enrolment_date"));
-//                student.setGroupId(rs.getInt("group_id"));
+                String userId = rs.getString("id");
+                user.setId(userId);
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
                 result.add(user);
             }
         } catch (Exception e) {
@@ -59,11 +73,9 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, User object) {
         try {
-//            Date sqlDate = convert(object.getEnrolmentDate());
-//            statement.setString(1, object.getName());
-//            statement.setString(2, object.getSurname());
-//            statement.setDate(3, sqlDate);
-//            statement.setInt(4, object.getGroupId());
+            statement.setString(1, object.getId());
+            statement.setString(2, object.getEmail());
+            statement.setString(3, object.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,23 +84,12 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, User object) {
         try {
-//            statement.setString(1, object.getName());
-//            statement.setString(2, object.getSurname());
-//            statement.setDate(3, convert(object.getEnrolmentDate()));
-//            statement.setInt(4, object.getGroupId());
-//            statement.setInt(5, object.getId());
+            statement.setString(1, object.getId());
+            statement.setString(2, object.getEmail());
+            statement.setString(3, object.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-
-    protected java.sql.Date convert(java.util.Date date) {
-        if (date == null) {
-            return null;
-        }
-        return new java.sql.Date(date.getTime());
     }
 
     @Override

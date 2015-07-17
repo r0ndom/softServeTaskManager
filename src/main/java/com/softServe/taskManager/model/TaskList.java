@@ -10,27 +10,33 @@ import java.util.List;
 @Entity
 public class TaskList extends AbstractPersistenceObject{
 
-    public static final int PRIMARY_LENGTH = 50;
+    public static final int PRIMARY_LENGTH = 32;
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
     @Column
     private String name;
     @Column
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "TASK_LIST",
-            joinColumns = @JoinColumn(name = "taskList_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
-    )
+    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "TASK_LIST",
+//            joinColumns = @JoinColumn(name = "taskList_id"),
+//            inverseJoinColumns = @JoinColumn(name = "task_id")
+//    )
+    @JoinColumn(name = "id")
     private List<Task> tasks;
+
+    //@Transient
+    @ManyToOne
+    private User user;
 
     public TaskList() {
     }
 
-    public TaskList(String name, List<Task> tasks) {
+    public TaskList(String name, List<Task> tasks, User user) {
         this.name = name;
         this.tasks = tasks;
+        this.user = user;
     }
 
     public String getName() {
@@ -47,5 +53,13 @@ public class TaskList extends AbstractPersistenceObject{
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

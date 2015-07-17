@@ -3,10 +3,7 @@ package com.softServe.taskManager.model;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -14,7 +11,7 @@ import java.util.Date;
 @Entity
 public class Task extends AbstractPersistenceObject{
 
-    public static final int PRIMARY_LENGTH = 50;
+    public static final int PRIMARY_LENGTH = 32;
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
@@ -24,12 +21,17 @@ public class Task extends AbstractPersistenceObject{
     @Temporal(TemporalType.DATE)
     private Date deadline;
 
+    //@Transient
+    @ManyToOne
+    private TaskList taskList;
+
     public Task() {
     }
 
-    public Task(String name, Date deadline) {
+    public Task(String name, Date deadline, TaskList taskList) {
         this.name = name;
         this.deadline = deadline;
+        this.taskList = taskList;
     }
 
     public String getName() {
@@ -46,5 +48,13 @@ public class Task extends AbstractPersistenceObject{
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+    public TaskList getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(TaskList taskList) {
+        this.taskList = taskList;
     }
 }

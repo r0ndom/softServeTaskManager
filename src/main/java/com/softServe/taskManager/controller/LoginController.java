@@ -19,18 +19,13 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout) {
+    public ModelAndView login(@RequestParam(value = "error", required = false) String error) {
         if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
             return new ModelAndView("redirect:/list");
         }
         ModelAndView model = new ModelAndView();
         if (error != null) {
             model.addObject("error", "Invalid username and password!");
-        }
-
-        if (logout != null) {
-            model.addObject("msg", "You've been logged out successfully.");
         }
         model.setViewName(LOGIN_LOGIN);
 

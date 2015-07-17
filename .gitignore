@@ -2,6 +2,7 @@
 db.bin
 db.json
 db.xml
+create_schema.sql
 
 # Package Files #
 *.jar

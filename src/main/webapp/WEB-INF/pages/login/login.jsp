@@ -23,16 +23,6 @@
             background-color: #f2dede;
             border-color: #ebccd1;
         }
-
-        .msg {
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            color: #31708f;
-            background-color: #d9edf7;
-            border-color: #bce8f1;
-        }
     </style>
     <div id="wrapper">
         <div class="container">
@@ -47,9 +37,6 @@
                         <div class="col-md-7">
                             <c:if test="${not empty error}">
                                 <div class="error">${error}</div>
-                            </c:if>
-                            <c:if test="${not empty msg}">
-                                <div class="msg">${msg}</div>
                             </c:if>
                         </div>
                     </div>

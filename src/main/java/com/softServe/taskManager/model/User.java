@@ -12,11 +12,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@Document
+//@Document
 @Entity
 public class User extends AbstractPersistenceObject{
 
-    public static final int PRIMARY_LENGTH = 50;
+    public static final int PRIMARY_LENGTH = 32;
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
@@ -27,12 +27,13 @@ public class User extends AbstractPersistenceObject{
     @Column
     private String password;
     @Column
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(
-            name = "USER_LIST",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "taskList_id")
-    )
+    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "USER_LIST",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "taskList_id")
+//    )
+    @JoinColumn(name = "id")
     private List<TaskList> lists;
 
     public User() {

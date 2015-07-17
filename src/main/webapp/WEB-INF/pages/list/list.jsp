@@ -3,8 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <tag:layout>
-    <jsp:include page="styles.jsp"/>
+
     <div id="mainPage">
+        <link href="${pageContext.request.contextPath}/resources/css/list.css" rel="stylesheet">
         <jsp:include page="header.jsp"/>
         <div class="container">
             <div style="margin-left: 15%; margin-right: 15%;">
