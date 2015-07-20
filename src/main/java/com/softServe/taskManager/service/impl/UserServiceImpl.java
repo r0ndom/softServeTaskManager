@@ -23,27 +23,8 @@ public class UserServiceImpl extends AbstractGenericServiceImpl<User> implements
 
     @Override
     public User create(User object) {
+        object.setPassword(String.valueOf(object.getPassword().hashCode()));
         return userDao.create(object);
-    }
-
-    @Override
-    public User update(User object) {
-        return userDao.update(object);
-    }
-
-    @Override
-    public void delete(String id) {
-        userDao.delete(id);
-    }
-
-    @Override
-    public User find(String id) {
-        return userDao.find(id);
-    }
-
-    @Override
-    public List<User> findAll() {
-        return userDao.findAll();
     }
 
     @Override

@@ -19,14 +19,14 @@ public class RegisterController {
     }
 
     @RequestMapping(value = "/addNewUser", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute User user) {
+    public String addUser(@ModelAttribute("user") User user) {
         userService.create(user);
         return "redirect:/login";
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.GET)
     @ResponseBody
-    public boolean checkUserEmail(@RequestParam String email) {
+    public boolean checkUserEmail(@RequestParam("email") String email) {
         return userService.isEmailExist(email);
     }
 }

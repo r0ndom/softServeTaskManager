@@ -21,12 +21,6 @@ public class UserDaoSpringDataImpl extends GenericDaoSpringDataImpl<User> implem
     }
 
     @Override
-    public User create(User user) {
-        user.setPassword(String.valueOf(user.getPassword().hashCode()));
-        return super.create(user);
-    }
-
-    @Override
     public User findByEmail(String email) {
         return mongoTemplate.findOne(Query.query(Criteria.where("email").is(email)), User.class, User.class.getSimpleName());
     }

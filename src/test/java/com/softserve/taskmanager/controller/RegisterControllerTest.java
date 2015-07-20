@@ -3,53 +3,58 @@ package com.softserve.taskmanager.controller;
 import com.softServe.taskManager.controller.LoginController;
 import com.softServe.taskManager.controller.RegisterController;
 import com.softServe.taskManager.model.User;
+import com.softServe.taskManager.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:mvc-test.xml")
-public class LoginControllerTest {
+public class RegisterControllerTest {
 
     @InjectMocks
-    private LoginController loginController;
+    private RegisterController registerController;
+    @Mock
+    private UserService userService;
     private MockMvc mockMvc;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(registerController).build();
     }
 
     @Test
-    public void redirectPageTest() throws Exception {
-        mockMvc.perform(get("/"))
+    public void showRegisterPageTest() throws Exception {
+        mockMvc.perform(get("/register"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("register/register"));
+    }
+
+    @Test
+    public void addUserTest() throws Exception {
+        mockMvc.perform(post("/addNewUser").sessionAttr("user", new User()))
                 .andExpect(status().isFound())
                 .andExpect(view().name("redirect:/login"));
     }
 
     @Test
-    public void loginPageTest() throws Exception {
-        mockMvc.perform(get("/login").param("error", ""))
-                .andExpect(status().isOk())
-                .andExpect(view().name("login/login"))
-                .andExpect(model().attributeExists("error"));
+    public void checkUserEmailTest() throws Exception {
+        mockMvc.perform(get("/validate").param("email", ""))
+                .andExpect(status().isOk());
     }
 }
