@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class GenericDaoJsonImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
-    private FilesUtilDao<T> dao;
+    protected FilesUtilDao<T> dao;
 
     protected GenericDaoJsonImpl(Class aClass) {
         this.dao = new FilesUtilDao<T>(new JsonConverter<T>(aClass), "db.json");

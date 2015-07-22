@@ -1,104 +1,80 @@
 package com.softServe.taskManager.dao.impl.jdbc;
 
+import com.softServe.taskManager.dao.TaskDao;
+import com.softServe.taskManager.dao.TaskListDao;
 import com.softServe.taskManager.dao.UserDao;
-import com.softServe.taskManager.model.Task;
 import com.softServe.taskManager.model.TaskList;
 import com.softServe.taskManager.model.User;
-import com.sun.javafx.tk.Toolkit;
+import com.softServe.taskManager.util.mappers.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by Mike on 7/14/2015.
- *
- */
+@Repository
 public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao {
+
+    @Autowired
+    private TaskDao taskDao;
+
+    @Autowired
+    private TaskListDao taskListDao;
+
     @Override
     public String getSelectQuery() {
-//        return "SELECT u.*, tl.*, t.* FROM tdlist.user u INNER JOIN tdlist.taskList tl INNER JOIN tdlist.task t";
-        return "SELECT u.*, tl.*, t.* FROM tdlist.user u INNER JOIN tdlist.taskList tl INNER JOIN tdlist.task t WHERE u.id = tl.user_id AND tl.id = t.tasklist_id;";
-    }
-
-    @Override
-    public String getCreateQuery() {
-        return "INSERT INTO tdlist.user \n" + "VALUES (?, ?, ?);"
-                + "INSERT INTO tdlist.taskList \n" + "VALUES(?, ?, ?);"
-                + "INSERT INTO tdlist.task \n" + "VALUES(?, ?, ?, ?);";
-
-//        return "INSERT INTO tdlist.user (email, password) \n" + "VALUES (?, ?);"
-//                + "INSERT INTO tdlist.taskList (name, user_id) \n" + "VALUES(?, ?);"
-//                + "INSERT INTO tdlist.task (name, taskDate, taskList_id) \n" + "VALUES(?, ?, ?);";
-    }
-
-    @Override
-    public String getUpdateQuery() {
-        return "UPDATE tdlist.user \n" + "SET email = ?, password = ? \n" + "WHERE id = ?;"
-                + "UPDATE tdlist.taskList \n" + "SET name = ?, user_id = ? \n" + "WHERE id = ?;"
-                + "UPDATE tdlist.task \n" + "SET name = ?, taskDate = ?, taskList_id = ? \n" + "WHERE id = ?;";
+        return getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + "where u.id = ?;";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM tdlist.user WHERE id = ?;"
-                + "DELETE FROM tdlist.taskList WHERE id = ?;"
-                + "DELETE FROM tdlist.task WHERE id = ?;";
-    }
-
-    public UserDaoJdbcImpl(Connection connection) {
-        super(connection);
+        return "DELETE FROM tdlist.user WHERE id = ?;";
     }
 
     @Override
-    protected List<User> parseResultSet(ResultSet rs) {
-        LinkedList<User> result = new LinkedList<User>();
-        try {
-            while (rs.next()) {
-                User user = new User();
-                String userId = rs.getString("id");
-                user.setId(userId);
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                result.add(user);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public String getFindAllQuery() {
+        return "SELECT u.*, tl.*, t.* FROM tdlist.user u LEFT JOIN tdlist.taskList " +
+                "tl on u.id=tl.user_id LEFT JOIN tdlist.task t on tl.id = t.taskList_id;";
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, User object) {
-        try {
-            statement.setString(1, object.getId());
-            statement.setString(2, object.getEmail());
-            statement.setString(3, object.getPassword());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public RowMapper getMapper() {
+        return new UserMapper();
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, User object) {
-        try {
-            statement.setString(1, object.getId());
-            statement.setString(2, object.getEmail());
-            statement.setString(3, object.getPassword());
-        } catch (Exception e) {
-            e.printStackTrace();
+    public User create(User user) {
+        String SQL = "insert into tdlist.user (email, password) values (?, ?)";
+        jdbcTemplateObject.update( SQL, user.getEmail(), user.getPassword());
+        List<TaskList> list = user.getLists();
+        taskListDao.create(list);
+        for (TaskList taskList : list) {
+            taskDao.create(taskList.getTasks());
         }
+        return user;
+    }
+
+    @Override
+    public User update(User user) {
+        String SQL = "update tdlist.user set email = ?, password = ? where id = ?";
+        jdbcTemplateObject.update(SQL, user.getEmail(), user.getPassword(), user.getId());
+        List<TaskList> list = user.getLists();
+        taskListDao.update(list);
+        for (TaskList taskList : list) {
+            taskDao.update(taskList.getTasks());
+        }
+        return user;
     }
 
     @Override
     public User findByEmail(String email) {
-        return null;
+        String SQL = getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + "where u.email = ?;";
+        return (User) jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, getMapper());
     }
 
     @Override
     public boolean isEmailExist(String email) {
-        return false;
+        return findByEmail(email) != null;
     }
+
 }

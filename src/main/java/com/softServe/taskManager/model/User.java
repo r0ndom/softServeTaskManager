@@ -1,18 +1,11 @@
 package com.softServe.taskManager.model;
 
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-//@Document
 @Entity
 public class User extends AbstractPersistenceObject{
 
@@ -28,11 +21,6 @@ public class User extends AbstractPersistenceObject{
     private String password;
     @Column
     @OneToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "USER_LIST",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "taskList_id")
-//    )
     @JoinColumn(name = "id")
     private List<TaskList> lists;
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class GenericDaoXmlImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
-    private FilesUtilDao<T> dao;
+    protected FilesUtilDao<T> dao;
 
     protected GenericDaoXmlImpl() {
         this.dao = new FilesUtilDao<T>(new XmlConverter(), "db.xml");

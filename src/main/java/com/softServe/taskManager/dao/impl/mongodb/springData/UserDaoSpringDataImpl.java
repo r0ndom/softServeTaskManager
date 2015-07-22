@@ -4,7 +4,6 @@ package com.softServe.taskManager.dao.impl.mongodb.springData;
 import com.softServe.taskManager.dao.UserDao;
 import com.softServe.taskManager.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

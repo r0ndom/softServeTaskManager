@@ -2,107 +2,50 @@ package com.softServe.taskManager.dao.impl.jdbc;
 
 import com.softServe.taskManager.dao.GenericDao;
 import com.softServe.taskManager.model.AbstractPersistenceObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 import java.util.List;
 
-
+@Component
 public abstract class GenericDaoJdbcImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
-    private Connection connection;
 
     public abstract String getSelectQuery();
 
-    public abstract String getCreateQuery();
-
-    public abstract String getUpdateQuery();
-
     public abstract String getDeleteQuery();
 
-    protected abstract List<T> parseResultSet(ResultSet rs);
+    public abstract String getFindAllQuery();
 
-    protected abstract void prepareStatementForInsert(PreparedStatement statement, T object);
+    public abstract RowMapper getMapper();
 
-    protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object);
+    @Autowired
+    protected DataSource dataSource;
+    protected JdbcTemplate jdbcTemplateObject;
+
+    protected GenericDaoJdbcImpl() {
+        this.jdbcTemplateObject = new JdbcTemplate(dataSource);
+    }
 
     @Override
-    public T find(String key){
-        List<T> list = null;
-        String sql = getSelectQuery();
-        sql += " WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, key);
-            ResultSet rs = statement.executeQuery();
-            list = parseResultSet(rs);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (list == null || list.size() == 0) {
-            return null;
-        }
-        return list.iterator().next();
+    public T find(String id) {
+        String SQL = getSelectQuery();
+        T obj = (T) jdbcTemplateObject.queryForObject(SQL, new Object[]{id}, getMapper());
+        return obj;
     }
 
     @Override
     public List<T> findAll() {
-        List<T> list = null;
-        String sql = getSelectQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            ResultSet rs = statement.executeQuery();
-            list = parseResultSet(rs);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
+        String SQL = getFindAllQuery();
+        List <T> objects = jdbcTemplateObject.query(SQL, getMapper());
+        return objects;
     }
 
     @Override
-    public T create(T object){
-        String sql = getCreateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            prepareStatementForInsert(statement, object);
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
-
-    @Override
-    public T update(T object) {
-        String sql = getUpdateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql);) {
-            prepareStatementForUpdate(statement, object);
-            statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
-
-    @Override
-    public void delete(String id) {
-        T object = find(id);
-        String sql = getDeleteQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            try {
-                statement.setObject(1, object.getId());
-            } catch (Exception e) {
-                throw new SQLException(e);
-            }
-            int count = statement.executeUpdate();
-            if (count != 1) {
-                throw new SQLException("On delete modify more then 1 record: " + count);
-            }
-            statement.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public GenericDaoJdbcImpl(Connection connection) {
-        this.connection = connection;
+    public void delete(String id){
+        String SQL = getDeleteQuery();
+        jdbcTemplateObject.update(SQL, id);
     }
 }

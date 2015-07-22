@@ -4,8 +4,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 @Entity
 public class TaskList extends AbstractPersistenceObject{
@@ -18,16 +16,10 @@ public class TaskList extends AbstractPersistenceObject{
     private String name;
     @Column
     @OneToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "TASK_LIST",
-//            joinColumns = @JoinColumn(name = "taskList_id"),
-//            inverseJoinColumns = @JoinColumn(name = "task_id")
-//    )
     @JoinColumn(name = "id")
     private List<Task> tasks;
 
-    //@Transient
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     public TaskList() {

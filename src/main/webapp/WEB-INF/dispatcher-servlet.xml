@@ -12,18 +12,15 @@
 
 	<context:component-scan base-package="com.softServe.taskManager" />
 
-	<!-- Factory bean that creates the Mongo instance -->
 	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
 		<property name="host" value="localhost" />
 	</bean>
-	
-	<!-- MongoTemplate for connecting and quering the documents in the database -->
+
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongo" ref="mongo" />
 		<constructor-arg name="databaseName" value="test" />
 	</bean>
 
-	<!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
     <bean id="localeResolver"
@@ -44,7 +41,6 @@
         </property>
     </bean>
 
-    <!-- Register the welcome.properties -->
     <bean id="messageSource"
           class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages.messages" />

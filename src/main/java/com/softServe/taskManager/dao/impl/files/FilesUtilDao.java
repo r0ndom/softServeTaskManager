@@ -55,6 +55,19 @@ public class FilesUtilDao<T extends AbstractPersistenceObject> implements Generi
         return t;
     }
 
+    public void update(List<T> list) {
+        for (T obj : list) {
+            delete(obj.getId());
+        }
+        storage.addAll(list);
+        converter.convert(storage, dbName);
+    }
+
+    public void create(List<T> list) {
+        storage.addAll(list);
+        converter.convert(storage, dbName);
+    }
+
     @Override
     public List<T> findAll(){
         return storage;

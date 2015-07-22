@@ -4,8 +4,6 @@ package com.softServe.taskManager.dao.impl.files.json;
 import com.softServe.taskManager.dao.UserDao;
 import com.softServe.taskManager.model.User;
 
-import java.util.List;
-
 public class UserDaoJsonImpl extends GenericDaoJsonImpl<User> implements UserDao {
 
     public UserDaoJsonImpl() {

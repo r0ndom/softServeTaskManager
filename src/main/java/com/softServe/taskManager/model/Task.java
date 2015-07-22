@@ -4,8 +4,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity
@@ -21,8 +19,7 @@ public class Task extends AbstractPersistenceObject{
     @Temporal(TemporalType.DATE)
     private Date deadline;
 
-    //@Transient
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private TaskList taskList;
 
     public Task() {

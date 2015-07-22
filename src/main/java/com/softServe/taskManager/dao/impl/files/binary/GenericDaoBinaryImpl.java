@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class GenericDaoBinaryImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
-    private FilesUtilDao<T> dao;
+    protected FilesUtilDao<T> dao;
 
     protected GenericDaoBinaryImpl() {
         this.dao = new FilesUtilDao<T>(new BinaryConverter<T>(), "db.bin");

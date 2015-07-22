@@ -4,7 +4,8 @@ package com.softServe.taskManager.util.converters.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softServe.taskManager.util.converters.Convertable;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class JsonConverter<T> implements Convertable<T> {
