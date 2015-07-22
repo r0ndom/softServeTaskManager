@@ -23,18 +23,18 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
 
     @Override
     public String getSelectQuery() {
-        return getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + "where u.id = ?;";
+        return getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + " where u.id = ?";
     }
 
     @Override
     public String getDeleteQuery() {
-        return "DELETE FROM tdlist.user WHERE id = ?;";
+        return "DELETE FROM tdlist.user WHERE id = ?";
     }
 
     @Override
     public String getFindAllQuery() {
         return "SELECT u.*, tl.*, t.* FROM tdlist.user u LEFT JOIN tdlist.taskList " +
-                "tl on u.id=tl.user_id LEFT JOIN tdlist.task t on tl.id = t.taskList_id;";
+                "tl on u.id=tl.user_id LEFT JOIN tdlist.task t on tl.id = t.taskList_id";
     }
 
     @Override
@@ -44,8 +44,8 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
 
     @Override
     public User create(User user) {
-        String SQL = "insert into tdlist.user (email, password) values (?, ?)";
-        jdbcTemplateObject.update( SQL, user.getEmail(), user.getPassword());
+        String SQL = "insert into tdlist.user (id, email, password) values (?, ?, ?)";
+        jdbcTemplateObject.update( SQL, user.getId(), user.getEmail(), user.getPassword());
         List<TaskList> list = user.getLists();
         taskListDao.create(list);
         for (TaskList taskList : list) {
@@ -68,7 +68,7 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
 
     @Override
     public User findByEmail(String email) {
-        String SQL = getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + "where u.email = ?;";
+        String SQL = getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + "where u.email = ?";
         return (User) jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, getMapper());
     }
 
