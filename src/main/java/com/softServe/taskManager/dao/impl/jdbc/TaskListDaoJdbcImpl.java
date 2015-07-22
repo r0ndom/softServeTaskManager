@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class TaskListDaoJdbcImpl extends GenericDaoJdbcImpl<TaskList> implements TaskListDao {
 
     @Autowired

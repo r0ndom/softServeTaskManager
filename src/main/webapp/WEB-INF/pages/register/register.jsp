@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="tag" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <tag:layout>
     <style>
@@ -15,7 +16,7 @@
                 <form:form method="POST" id="register" action="/addNewUser" onsubmit="return validate()">
                     <div class="row">
                         <div class="col-md-2">
-                            <label>Email</label>
+                            <label><spring:message code="messages.email"/></label>
                         </div>
                         <div class="col-md-6">
                             <form:input id="email" cssClass="form-control" path="email" required="required"/>
@@ -24,7 +25,7 @@
                     <p></p>
                     <div class="row">
                         <div class="col-md-2">
-                            <label>Password</label>
+                            <label><spring:message code="messages.password"/></label>
                         </div>
                         <div class="col-md-6">
                             <form:password id="password" cssClass="form-control" path="password" required="required"/>
@@ -33,7 +34,7 @@
                     <p></p>
                     <div class="row">
                         <div class="col-md-2">
-                            <label>Confirm password</label>
+                            <label><spring:message code="messages.confPassword"/></label>
                         </div>
                         <div class="col-md-6">
                             <input class="form-control" id="confirm" type="password" required="required">
@@ -43,7 +44,8 @@
                     <label id="tip" style="color: red" hidden="hidden"></label>
                     <p></p>
                     <div class="row"><div class="col-md-8">
-                        <input class="btn btn-success" style="width: 100%; height: 40px" value="Sign Up" type="submit"></div></div>
+                        <input class="btn btn-success" style="width: 100%; height: 40px"
+                               value="<spring:message code="messages.signUp"/>" type="submit"></div></div>
                 </form:form>
             </div>
         </div>

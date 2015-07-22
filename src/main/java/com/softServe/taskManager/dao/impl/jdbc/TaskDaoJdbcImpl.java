@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
+//@Repository
 public class TaskDaoJdbcImpl extends GenericDaoJdbcImpl<Task> implements TaskDao {
     @Override
     public String getSelectQuery() {

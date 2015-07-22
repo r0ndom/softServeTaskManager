@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-md-4"><h3><spring:message code="messages.signIn"/></h3></div>
                         <div class="col-md-3" style="text-align: right; margin-top: 20px">
-                            <h5><a href="/register" style="text-decoration: underline;">Sign Up</a></h5></div>
+                            <h5><a href="/register" style="text-decoration: underline;"><spring:message code="messages.signUp"/></a></h5></div>
                     </div>
                     <div class="row">
                         <div class="col-md-7">
@@ -42,19 +42,19 @@
                     </div>
                     <div class="row"><div class="col-md-7" style="margin-bottom: 10px;">
                         <input class="col-md-3 form-control" id="username" name="username"
-                               placeholder="Email" type="text" style="height: 38px;">
+                               placeholder="<spring:message code="messages.email"/>" type="text" style="height: 38px;">
                     </div></div>
                     <div class="row"><div class="col-md-7" style="margin-bottom: 10px;">
                         <input class="col-md-3 form-control" id="password" name="password"
-                               placeholder="Password" type="password" style="height: 38px;">
+                               placeholder="<spring:message code="messages.password"/>" type="password" style="height: 38px;">
                     </div></div>
                     <div class="row" style="margin-bottom: 5px">
                         <div class="col-md-4">
-                            <input type="checkbox" name="showPassword" onchange="showPasswordLogin();">Show Password
+                            <input type="checkbox" name="showPassword" onchange="showPasswordLogin();"><spring:message code="messages.showPassword"/>
                         </div>
                     </div>
                     <div class="row"><div class="col-md-7">
-                        <input class="btn btn-primary" style="width: 100%; height: 40px" value="Sign In" type="submit"></div></div>
+                        <input class="btn btn-primary" style="width: 100%; height: 40px" value="<spring:message code="messages.signIn"/>" type="submit"></div></div>
                 </form>
             </div>
         </div>

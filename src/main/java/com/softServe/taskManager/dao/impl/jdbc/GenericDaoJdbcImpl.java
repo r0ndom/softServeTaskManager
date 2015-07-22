@@ -2,15 +2,15 @@ package com.softServe.taskManager.dao.impl.jdbc;
 
 import com.softServe.taskManager.dao.GenericDao;
 import com.softServe.taskManager.model.AbstractPersistenceObject;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.util.List;
 
-@Component
+//@Component
 public abstract class GenericDaoJdbcImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
     public abstract String getSelectQuery();
@@ -22,7 +22,7 @@ public abstract class GenericDaoJdbcImpl<T extends AbstractPersistenceObject> im
     public abstract RowMapper getMapper();
 
     @Autowired
-    protected DataSource dataSource;
+    private BasicDataSource dataSource;
     protected JdbcTemplate jdbcTemplateObject;
 
     protected GenericDaoJdbcImpl() {
