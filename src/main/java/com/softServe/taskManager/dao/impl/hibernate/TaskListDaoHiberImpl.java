@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Primary
+//@Primary
 @Repository
 public class TaskListDaoHiberImpl extends GenericDaoHiberImpl<TaskList> implements TaskListDao {
     @Override

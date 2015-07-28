@@ -21,13 +21,13 @@ public abstract class GenericDaoCollectionImpl<T extends AbstractPersistenceObje
     }
 
     @Override
-    public void delete(String id){
+    public void delete(Long id){
         T t = find(id);
         storage.remove(t);
     }
 
     @Override
-    public T find(String id){
+    public T find(Long id){
         for (T t : storage) {
             if (t.getId().equals(id))
                 return t;

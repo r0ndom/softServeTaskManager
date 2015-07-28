@@ -24,12 +24,12 @@ public abstract class AbstractGenericServiceImpl<T extends AbstractPersistenceOb
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         getDao().delete(id);
     }
 
     @Override
-    public T find(String id) {
+    public T find(Long id) {
         return getDao().find(id);
     }
 

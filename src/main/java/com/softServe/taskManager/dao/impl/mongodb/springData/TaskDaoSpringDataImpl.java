@@ -14,11 +14,10 @@ public class TaskDaoSpringDataImpl extends GenericDaoSpringDataImpl<Task> implem
 
     @Override
     public void create(List<Task> tasks) {
-
+        mongoTemplate.insert(tasks, Task.class);
     }
 
     @Override
     public void update(List<Task> tasks) {
-
     }
 }

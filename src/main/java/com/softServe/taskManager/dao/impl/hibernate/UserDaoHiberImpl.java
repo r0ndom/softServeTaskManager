@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-@Primary
+//@Primary
 @Repository
 public class UserDaoHiberImpl extends GenericDaoHiberImpl<User> implements UserDao {
     public static final String EMAIL_STRING = "email";

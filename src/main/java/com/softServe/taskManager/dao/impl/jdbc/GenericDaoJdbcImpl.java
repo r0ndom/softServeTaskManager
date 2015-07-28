@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-//@Component
+@Component
 public abstract class GenericDaoJdbcImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
     public abstract String getSelectQuery();
@@ -21,16 +21,15 @@ public abstract class GenericDaoJdbcImpl<T extends AbstractPersistenceObject> im
 
     public abstract RowMapper getMapper();
 
-    @Autowired
-    private BasicDataSource dataSource;
+    //private BasicDataSource dataSource;
     protected JdbcTemplate jdbcTemplateObject;
 
-    protected GenericDaoJdbcImpl() {
+    protected GenericDaoJdbcImpl(BasicDataSource dataSource) {
         this.jdbcTemplateObject = new JdbcTemplate(dataSource);
     }
 
     @Override
-    public T find(String id) {
+    public T find(Long id) {
         String SQL = getSelectQuery();
         T obj = (T) jdbcTemplateObject.queryForObject(SQL, new Object[]{id}, getMapper());
         return obj;
@@ -44,7 +43,7 @@ public abstract class GenericDaoJdbcImpl<T extends AbstractPersistenceObject> im
     }
 
     @Override
-    public void delete(String id){
+    public void delete(Long id){
         String SQL = getDeleteQuery();
         jdbcTemplateObject.update(SQL, id);
     }

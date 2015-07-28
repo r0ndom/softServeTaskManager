@@ -37,12 +37,12 @@ public abstract class GenericDaoHiberImpl<T extends AbstractPersistenceObject> i
     }
 
     @Override
-    public void delete(final String id) {
+    public void delete(final Long id) {
         getCurrentSession().delete(find(id));
     }
 
     @Override
-    public T find(final String id) {
+    public T find(final Long id) {
         return (T) getCurrentSession().get(type, id);
     }
 

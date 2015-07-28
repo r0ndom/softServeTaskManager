@@ -9,9 +9,9 @@ public interface GenericService<T> {
 
     T update(T object);
 
-    void delete(String id);
+    void delete(Long id);
 
-    T find(String id);
+    T find(Long id);
 
     List<T> findAll();
 

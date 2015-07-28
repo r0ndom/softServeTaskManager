@@ -13,7 +13,7 @@ import java.util.List;
 public abstract class GenericDaoSpringDataImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    protected MongoTemplate mongoTemplate;
 
     private final Class<T> tClass;
 
@@ -31,12 +31,12 @@ public abstract class GenericDaoSpringDataImpl<T extends AbstractPersistenceObje
     }
 
     @Override
-    public void delete(String id){
+    public void delete(Long id){
         mongoTemplate.remove(Query.query(Criteria.where("id").is(id)), tClass.getSimpleName());
     }
 
     @Override
-    public T find(String id){
+    public T find(Long id){
         return mongoTemplate.findOne(Query.query(Criteria.where("id").is(id)), tClass, tClass.getSimpleName());
     }
 

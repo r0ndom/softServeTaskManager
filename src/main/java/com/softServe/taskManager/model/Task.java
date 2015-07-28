@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 public class Task extends AbstractPersistenceObject{
 
-    public static final int PRIMARY_LENGTH = 32;
+    public static final int PRIMARY_LENGTH = 64;
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
@@ -20,6 +20,7 @@ public class Task extends AbstractPersistenceObject{
     private Date deadline;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "taskList_id")
     private TaskList taskList;
 
     public Task() {

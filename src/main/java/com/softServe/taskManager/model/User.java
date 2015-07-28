@@ -9,7 +9,7 @@ import java.util.List;
 @Entity
 public class User extends AbstractPersistenceObject{
 
-    public static final int PRIMARY_LENGTH = 32;
+    public static final int PRIMARY_LENGTH = 64;
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
@@ -20,8 +20,8 @@ public class User extends AbstractPersistenceObject{
     @Column
     private String password;
     @Column
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    //@JoinColumn(name = "id")
     private List<TaskList> lists;
 
     public User() {

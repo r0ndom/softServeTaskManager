@@ -5,7 +5,9 @@ import com.softServe.taskManager.dao.TaskListDao;
 import com.softServe.taskManager.model.Task;
 import com.softServe.taskManager.model.TaskList;
 import com.softServe.taskManager.util.mappers.TaskListMapper;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -15,15 +17,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Repository
+@Primary
+@Repository
 public class TaskListDaoJdbcImpl extends GenericDaoJdbcImpl<TaskList> implements TaskListDao {
 
     @Autowired
     private TaskDao taskDao;
 
+    @Autowired
+    protected TaskListDaoJdbcImpl(BasicDataSource dataSource) {
+        super(dataSource);
+    }
+
     @Override
     public String getSelectQuery() {
-        return getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + " where tl.id = ?";
+        return getFindAllQuery().substring(0, getFindAllQuery().length()) + " where tl.id = ?";
     }
 
     @Override
@@ -43,7 +51,7 @@ public class TaskListDaoJdbcImpl extends GenericDaoJdbcImpl<TaskList> implements
 
     @Override
     public void create(List<TaskList> taskLists) {
-        String SQL = "insert into tdlist.taskList (id, name, user_id) values (?, ?, ?)";
+        String SQL = "insert into tdlist.taskList (name, user_id) values (?, ?)";
         List<Object[]> parameters = new ArrayList<Object[]>();
 
         for (TaskList taskList : taskLists) {
@@ -67,7 +75,7 @@ public class TaskListDaoJdbcImpl extends GenericDaoJdbcImpl<TaskList> implements
 
     @Override
     public TaskList create(TaskList taskList) {
-        String SQL = "insert into tdlist.taskList (id, name, user_id) values (?, ?, ?)";
+        String SQL = "insert into tdlist.taskList (name, user_id) values (?, ?)";
         jdbcTemplateObject.update(SQL, taskList.getId(), taskList.getName(), taskList.getUser().getId());
         taskDao.create(taskList.getTasks());
         return taskList;

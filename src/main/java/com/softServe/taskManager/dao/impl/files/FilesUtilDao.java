@@ -32,14 +32,14 @@ public class FilesUtilDao<T extends AbstractPersistenceObject> implements Generi
     }
 
     @Override
-    public void delete(String id){
+    public void delete(Long id){
         T t = find(id);
         storage.remove(t);
         converter.convert(storage, dbName);
     }
 
     @Override
-    public T find(String id){
+    public T find(Long id){
         for (T t : storage) {
             if (t.getId().equals(id))
                 return t;

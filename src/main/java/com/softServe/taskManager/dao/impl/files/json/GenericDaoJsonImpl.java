@@ -23,12 +23,12 @@ public abstract class GenericDaoJsonImpl<T extends AbstractPersistenceObject> im
     }
 
     @Override
-    public void delete(String id){
+    public void delete(Long id){
         dao.delete(id);
     }
 
     @Override
-    public T find(String id){
+    public T find(Long id){
         return dao.find(id);
     }
 

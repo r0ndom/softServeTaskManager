@@ -6,13 +6,16 @@ import com.softServe.taskManager.dao.UserDao;
 import com.softServe.taskManager.model.TaskList;
 import com.softServe.taskManager.model.User;
 import com.softServe.taskManager.util.mappers.UserMapper;
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-//@Repository
+@Primary
+@Repository
 public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao {
 
     @Autowired
@@ -21,9 +24,14 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
     @Autowired
     private TaskListDao taskListDao;
 
+    @Autowired
+    protected UserDaoJdbcImpl(BasicDataSource dataSource) {
+        super(dataSource);
+    }
+
     @Override
     public String getSelectQuery() {
-        return getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + " where u.id = ?";
+        return getFindAllQuery().substring(0, getFindAllQuery().length()) + " where u.id = ?";
     }
 
     @Override
@@ -44,12 +52,14 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
 
     @Override
     public User create(User user) {
-        String SQL = "insert into tdlist.user (id, email, password) values (?, ?, ?)";
-        jdbcTemplateObject.update( SQL, user.getId(), user.getEmail(), user.getPassword());
+        String SQL = "insert into tdlist.user (email, password) values (?, ?)";
+        jdbcTemplateObject.update( SQL, user.getEmail(), user.getPassword());
         List<TaskList> list = user.getLists();
-        taskListDao.create(list);
-        for (TaskList taskList : list) {
-            taskDao.create(taskList.getTasks());
+        if (list != null) {
+            taskListDao.create(list);
+            for (TaskList taskList : list) {
+                taskDao.create(taskList.getTasks());
+            }
         }
         return user;
     }
@@ -68,7 +78,7 @@ public class UserDaoJdbcImpl extends GenericDaoJdbcImpl<User> implements UserDao
 
     @Override
     public User findByEmail(String email) {
-        String SQL = getFindAllQuery().substring(0, getFindAllQuery().length() - 1) + "where u.email = ?";
+        String SQL = getFindAllQuery().substring(0, getFindAllQuery().length()) + " where u.email = ?";
         return (User) jdbcTemplateObject.queryForObject(SQL, new Object[]{email}, getMapper());
     }
 

@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(locations = "classpath:mvc-service-test.xml")
 public abstract class AbstractGenericServiceTest {
 
-    public static final String ID = "id";
+    public static final Long ID = 1L;
 
     private GenericDao<AbstractPersistenceObject> genericDao;
     private GenericService<AbstractPersistenceObject> genericService;
