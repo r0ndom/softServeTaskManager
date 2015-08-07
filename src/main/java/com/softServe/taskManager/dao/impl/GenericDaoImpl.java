@@ -1,4 +1,4 @@
-package com.softServe.taskManager.dao.impl.hibernate;
+package com.softServe.taskManager.dao.impl;
 
 import com.softServe.taskManager.dao.GenericDao;
 import com.softServe.taskManager.model.AbstractPersistenceObject;
@@ -14,13 +14,13 @@ import java.util.List;
 
 @Component
 @SuppressWarnings("unchecked")
-public abstract class GenericDaoHiberImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
+public abstract class GenericDaoImpl<T extends AbstractPersistenceObject> implements GenericDao<T> {
 
     @Autowired
     private SessionFactory sessionFactory;
     private Class<T> type;
 
-    public GenericDaoHiberImpl() {
+    public GenericDaoImpl() {
         final Type t = getClass().getGenericSuperclass();
         final ParameterizedType pt = (ParameterizedType) t;
         type = (Class) pt.getActualTypeArguments()[0];

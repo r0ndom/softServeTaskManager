@@ -5,12 +5,9 @@ import com.softServe.taskManager.dao.UserDao;
 import com.softServe.taskManager.model.AbstractPersistenceObject;
 import com.softServe.taskManager.model.User;
 import com.softServe.taskManager.service.GenericService;
-import com.softServe.taskManager.service.UserService;
 import com.softServe.taskManager.service.impl.UserServiceImpl;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 public class UserServiceTest extends AbstractGenericServiceTest {

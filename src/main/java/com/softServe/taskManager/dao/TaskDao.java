@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface TaskDao extends GenericDao<Task> {
 
-    public void create(List<Task> tasks);
+    public List<Task> list(Integer offset, Integer maxResults);
 
-    public void update(List<Task> tasks);
+    public Long count();
 
 }

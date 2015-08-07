@@ -1,16 +1,14 @@
-package com.softServe.taskManager.dao.impl.hibernate;
+package com.softServe.taskManager.dao.impl;
 
 
 import com.softServe.taskManager.dao.UserDao;
 import com.softServe.taskManager.model.User;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-//@Primary
 @Repository
-public class UserDaoHiberImpl extends GenericDaoHiberImpl<User> implements UserDao {
+public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public static final String EMAIL_STRING = "email";
 
     @Override

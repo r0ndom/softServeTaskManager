@@ -13,23 +13,16 @@ public class Task extends AbstractPersistenceObject{
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
-    @Column
     private String name;
-    @Column
     @Temporal(TemporalType.DATE)
     private Date deadline;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "taskList_id")
-    private TaskList taskList;
 
     public Task() {
     }
 
-    public Task(String name, Date deadline, TaskList taskList) {
+    public Task(String name, Date deadline) {
         this.name = name;
         this.deadline = deadline;
-        this.taskList = taskList;
     }
 
     public String getName() {
@@ -46,13 +39,5 @@ public class Task extends AbstractPersistenceObject{
 
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
-    }
-
-    public TaskList getTaskList() {
-        return taskList;
-    }
-
-    public void setTaskList(TaskList taskList) {
-        this.taskList = taskList;
     }
 }

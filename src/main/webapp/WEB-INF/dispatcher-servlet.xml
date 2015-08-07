@@ -12,17 +12,6 @@
 
 	<context:component-scan base-package="com.softServe.taskManager" />
 
-	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
-		<property name="host" value="localhost" />
-	</bean>
-
-	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongo" ref="mongo" />
-		<constructor-arg name="databaseName" value="test" />
-	</bean>
-
-	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-
     <bean id="localeResolver"
           class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
         <property name="defaultLocale" value="en" />
@@ -47,8 +36,7 @@
     </bean>
 
 
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/pages/</value>
         </property>

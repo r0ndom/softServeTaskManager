@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,24 +14,21 @@ public class User extends AbstractPersistenceObject{
 
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
-    @Column
     private String email;
     @NotEmpty
     @Length(max = PRIMARY_LENGTH)
-    @Column
     private String password;
-    @Column
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    //@JoinColumn(name = "id")
-    private List<TaskList> lists;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private List<Task> tasks;
 
     public User() {
     }
 
-    public User(String email, String password, List<TaskList> lists) {
+    public User(String email, String password, List<Task> tasks) {
         this.email = email;
         this.password = password;
-        this.lists = lists;
+        this.tasks = tasks;
     }
 
     public String getEmail() {
@@ -49,34 +47,12 @@ public class User extends AbstractPersistenceObject{
         this.password = password;
     }
 
-    public List<TaskList> getLists() {
-        return lists;
+    public List<Task> getTasks() {
+        return tasks != null ? tasks : new ArrayList<Task>();
     }
 
-    public void setLists(List<TaskList> lists) {
-        this.lists = lists;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (!email.equals(user.email)) return false;
-        if (lists != null ? !lists.equals(user.lists) : user.lists != null) return false;
-        if (!password.equals(user.password)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = email.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + (lists != null ? lists.hashCode() : 0);
-        return result;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override

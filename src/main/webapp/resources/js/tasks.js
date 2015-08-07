@@ -1,78 +1,81 @@
 $( document ).ready(function() {
     $( "tbody" ).sortable().disableSelection();
     $("#newDeadline").datepicker({minDate: 0, dateFormat: "yy-mm-dd"});
+    $("#createTaskDeadline").datepicker({minDate: 0, dateFormat: "yy-mm-dd"});
 });
 
 $(document).on("click", "#addNewTaskButton", function () {
-    var temp = $(this).closest('.panel-default').attr('id');
-    var listName = temp.substr(0, temp.length - 4);
-    var taskName = $("#newTaskNameFor" + listName.replace(/ /g, "_")).val();
+    var taskName = $("#createTaskName").val();
+    var deadline = $("#createTaskDeadline").val();
     if (checkString(taskName)) {
-        createTask(listName, taskName);
+        createTask(taskName, deadline);
     }
 });
-function createTask(listName, taskName) {
+function createTask(taskName, deadline) {
     $.ajax({
         url: "/list/createTask/",
         method: "POST",
-        data: {listName: listName.replace(/_/g, " "), name: taskName},
-        success: createTaskView(listName, taskName)
+        data: JSON.stringify({name: taskName, deadline: deadline}),
+        dataType: 'text',
+        contentType: 'application/json',
+        success: function(id) {
+            createTaskView(id, taskName, deadline);
+        }
     });
 }
-function createTaskView(listName, taskName) {
-    $("#newTaskNameFor" + listName).val("");
+function createTaskView(id, taskName, deadline) {
+    $("#createTaskName").val("");
+    $("#createTaskDeadline").val("");
     var td = $("#task").clone();
-    td.attr("id", listName + "/" + taskName.replace(/ /g, "_") + "Task");
+    td.attr("id", id);
     td.find("#taskName").text(taskName);
-    $("#" + listName + "List").find(".table").append(td);
+    td.find("#taskDeadline").text(deadline);
+    $("#List").find(".table").append(td);
     td.show();
 }
 
 $(document).on("click", "#editTask", function () {
-    var temp = $(this).closest('.panel-default').attr('id');
-    var listName = temp.substr(0, temp.length - 4);
-    var oldName = $(this).data('id');
-    $("#editListNameHidden").text(listName.replace(/_/g, " "));
-    $("#editTaskNameHidden").text(oldName);
+    var id = $(this).data('id');
+    $("#editTaskNameHidden").text(id);
     $("#editTaskModal").modal('show');
 });
 function editTask() {
-    var name = $("#editTaskForm").find("#newTaskName").val();
-    var deadline = $("#editTaskForm").find("#newDeadline").val();
-    var listName = $("#editListNameHidden").text();
-    var taskName = $("#editTaskNameHidden").text();
-    var task = {
-        'name' : name,
-        'deadline' : deadline
-    };
+    $("#editTaskModal").modal('hide');
+    var name = $("#newTaskName").val();
+    var deadline = $("#newDeadline").val();
+    var id = $("#editTaskNameHidden").text();
     $.ajax({
         url: "/list/editTask/",
         method: "POST",
-        data: JSON.stringify({"listName": listName, "oldName": taskName, "task": task}),
+        data: JSON.stringify({"name": name, "deadline": deadline, "id":id}),
         contentType : 'application/json; charset=utf-8',
-        dataType : 'json',
-        success: editTaskView(listName, taskName, name, deadline)
+        success: editTaskView(id, name, deadline)
     });
 }
-function editTaskView(listName, oldName, taskName, taskDeadline) {
-    var template = listName.replace(/ /g, "_") + ":";
-    var id = template + oldName.replace(/ /g, "_") + "Task";
-    var newId = template + taskName.replace(/ /g, "_") + "Task";
-    var tableData = $("#" + id);
-    tableData.attr("id", newId);
-//    tableData.find('#taskName').text(taskName);
-//    tableData.find('#taskDeadline').text(taskDeadline);
-//    tableData.find('#editTask').attr("data-id", taskName);
-//    tableData.find('#deleteTask').attr("data-id", taskName);
+function editTaskView(id, taskName, taskDeadline) {
+    var tableData = $('#'+id).closest("tr");
+    tableData.find('#taskName').text(taskName);
+    tableData.find('#taskDeadline').text(taskDeadline);
+    tableData.find('#editTask').attr("data-id", id);
+    tableData.find('#deleteTask').attr("data-id", id);
 }
 $(document).on("click", "#deleteTask", function () {
-
+    var id = $(this).data('id');
+    $("#deleteTaskId").text(id);
+    $("#deleteTaskModal").modal('show');
 });
-function deleteTask(listName, taskName) {
-
+function deleteTask() {
+    $("#deleteTaskModal").modal('hide');
+    var id = $("#deleteTaskId").text();
+    $.ajax({
+        url: "/list/deleteTask/" + id,
+        method: "POST",
+        success: deleteTaskView(id)
+    });
 }
-function deleteTaskView(listName, taskName) {
-
+function deleteTaskView(id) {
+    var tableData = $('#'+id).closest("tr");
+    tableData.remove();
 }
 function checkString(str) {
     if (str.length == 0) {

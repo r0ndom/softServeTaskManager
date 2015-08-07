@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <span>Are you sure?</span>
-                <span id="deleteListName" hidden="hidden"></span>
+                <span id="deleteTaskId" hidden="hidden"></span>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
